@@ -1,0 +1,125 @@
+.date-picker-x {
+    $background: #444;
+    $active: #06f;
+    $daySize: 44px;
+    $weekdaySize: 24px;
+
+    background: $background;
+    box-sizing: content-box;
+    color: #fff;
+    display: none;
+    font: 18px/1 Arial;
+    padding: 10px;
+    position: absolute;
+    transform: translateY(15px);
+    user-select: none;
+    width: $daySize * 7;
+    z-index: 1;
+
+    &::before {
+        border-color: $background transparent;
+        border-style: solid;
+        border-width: 0 10px 10px;
+        bottom: 100%;
+        content: "";
+        left: 20px;
+        position: absolute;
+    }
+    &.active {
+        display: block;
+    }
+    * {
+        box-sizing: border-box;
+    }
+    .dpx-title-box {
+        align-items: center;
+        border-bottom: 1px solid #ccc;
+        display: flex;
+        height: 45px;
+        justify-content: space-between;
+        padding-bottom: 10px;
+    }
+    .dpx-prev,
+    .dpx-next {
+        color: rgba(#fff, .6);
+        cursor: pointer;
+        font-size: 22px;
+        line-height: 50px;
+        text-align: center;
+        transition: .2s;
+        width: 50px;
+
+        &:hover {
+            color: #fff;
+        }
+    }
+    .dpx-title {
+        font-size: 18px;
+        line-height: 40px;
+        padding: 0 10px;
+    }
+    &:not([data-dpx-type="year"]) .dpx-title {
+        cursor: pointer;
+    }
+    .dpx-content-box {
+        box-sizing: content-box;
+        display: flex;
+        flex-wrap: wrap;
+        height: $weekdaySize + $daySize * 6;
+        justify-content: center;
+        padding-top: 10px;
+    }
+    .dpx-btns {
+        border-top: 1px solid #ccc;
+        display: flex;
+        padding-top: 10px;
+
+        .dpx-item {
+            flex: 1 1 0;
+            height: 30px !important;
+        }
+    }
+    .dpx-item {
+        align-items: center;
+        display: flex;
+        flex: 1 0 25%;
+        justify-content: center;
+
+        &:not(.dpx-weekday) {
+            cursor: pointer;
+
+            &:hover {
+                box-shadow: inset 0 0 0 2px lighten($active, 10%), inset 0 0 0 4px $background;
+            }
+        }
+    }
+    .dpx-weekday {
+        font-size: 15px;
+        height: $weekdaySize !important;
+    }
+    &[data-dpx-type="day"] .dpx-item {
+        flex-basis: $daySize;
+        height: $daySize;
+    }
+    .dpx-current {
+        box-shadow: inset 0 0 0 2px lighten($active, 20%);
+    }
+    .dpx-selected {
+        background: $active;
+    }
+    .dpx-weekend {
+        color: #f99;
+    }
+    .dpx-out {
+        color: #bbb;
+    }
+    .dpx-disabled {
+        color: #666 !important;
+        cursor: default !important;
+        box-shadow: none !important;
+
+        &.dpx-current {
+            box-shadow: inset 0 0 0 2px lighten($active, 20%) !important;
+        }
+    }
+}
