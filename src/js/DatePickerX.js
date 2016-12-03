@@ -493,6 +493,10 @@
                     input.value = getFormatedDate(dt, options.format);
                 }
 
+                var e = document.createEvent('Event');
+                e.initEvent('change', true, true);
+                input.dispatchEvent(e);
+
                 isActive() && draw();
                 return true;
             },

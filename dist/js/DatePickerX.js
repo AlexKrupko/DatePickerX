@@ -9,7 +9,7 @@
  * @copyright 2016 Avrora Team www.avrora.team
  * @license   MIT
  * @tutorial  http://datepickerx.avrora.team
- * @version   1.0.0
+ * @version   1.0.1
  */
 
 !function()
@@ -506,6 +506,10 @@
                     value = dt.getTime();
                     input.value = getFormatedDate(dt, options.format);
                 }
+
+                var e = document.createEvent('Event');
+                e.initEvent('change', true, true);
+                input.dispatchEvent(e);
 
                 isActive() && draw();
                 return true;
