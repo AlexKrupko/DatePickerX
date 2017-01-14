@@ -349,7 +349,7 @@
             current = current.getTime();
 
             // draw calendar
-            elements.container.dataset.dpxType = ['year', 'month', 'day'][mode];
+            elements.container.setAttribute('data-dpx-type', ['year', 'month', 'day'][mode]);
             var getter = ['getFullYear', 'getMonth', 'getDate'][mode],
                 setter = ['setFullYear', 'setMonth', 'setDate'][mode],
                 i      = mode === 2 ? 42 : 16;
