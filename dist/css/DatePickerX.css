@@ -67,6 +67,7 @@
 .date-picker-x .dpx-next {
 	color: rgba(255, 255, 255, 0.6);
 	cursor: pointer;
+	display: block;
 	font-size: 22px;
 	line-height: 50px;
 	text-align: center;
@@ -81,6 +82,7 @@
 }
 
 .date-picker-x .dpx-title {
+	display: block;
 	font-size: 18px;
 	line-height: 40px;
 	padding: 0 10px;

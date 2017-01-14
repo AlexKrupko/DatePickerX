@@ -43,6 +43,7 @@
     .dpx-next {
         color: rgba(#fff, .6);
         cursor: pointer;
+        display: block; // for IE10
         font-size: 22px;
         line-height: 50px;
         text-align: center;
@@ -54,6 +55,7 @@
         }
     }
     .dpx-title {
+        display: block; // for IE10
         font-size: 18px;
         line-height: 40px;
         padding: 0 10px;
