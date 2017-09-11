@@ -191,6 +191,10 @@
                     mode = 2;
                     draw();
                     elements.container.classList.add('active');
+                    elements.container.classList.remove('to-top');
+
+                    var bcr = elements.container.getBoundingClientRect();
+                    bcr.bottom > window.innerHeight && bcr.top > elements.container.offsetHeight && elements.container.classList.add('to-top');
 
                     openedDPX && openedDPX !== elements.container && openedDPX.classList.remove('active');
                     openedDPX = elements.container;
@@ -435,6 +439,7 @@
                 }
 
                 // DPX init
+                input.parentNode.classList.add('date-picker-x-container');
                 input.classList.add('date-picker-x-input');
                 input.readOnly = true;
                 createElements();
@@ -466,10 +471,11 @@
              * If passed not Date object, method will try to convert it to date.
              * If passed null, method will clear date.
              *
-             * @param   {*}       dt Date object
+             * @param   {*}       dt                   Date object
+             * @param   {Boolean} [ignoreLimits=false] If passed true min and max limits will be ignored
              * @returns {Boolean}
              */
-            setValue: function(dt)
+            setValue: function(dt, ignoreLimits)
             {
                 if (!inited) {
                     return console.error('DatePickerX, remove: Date picker doesn\'t init yet.') && false;
@@ -485,7 +491,7 @@
                         return console.error('DatePickerX, setValue: Can\'t convert argument to date.') && false;
                     }
 
-                    if (dt.getTime() < getMinDate().getTime() || dt.getTime() > getMaxDate().getTime()) {
+                    if (!ignoreLimits && (dt.getTime() < getMinDate().getTime() || dt.getTime() > getMaxDate().getTime())) {
                         return console.error('DatePickerX, setValue: Date out of acceptable range.') && false;
                     }
 

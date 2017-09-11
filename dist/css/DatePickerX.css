@@ -9,8 +9,12 @@
  * @copyright 2016 Avrora Team www.avrora.team
  * @license   MIT
  * @tutorial  http://datepickerx.avrora.team
- * @version   1.0.1
+ * @version   1.0.2
  */
+
+.date-picker-x-container {
+	position: relative;
+}
 
 .date-picker-x {
 	background: #444;
@@ -20,6 +24,7 @@
 	font: 18px/1 Arial;
 	padding: 10px;
 	position: absolute;
+	top: 100%;
 	-webkit-transform: translateY(15px);
 	transform: translateY(15px);
 	-webkit-user-select: none;
@@ -38,6 +43,19 @@
 	content: "";
 	left: 20px;
 	position: absolute;
+}
+
+.date-picker-x.to-top {
+	bottom: 100%;
+	top: initial;
+	-webkit-transform: translateY(-15px);
+	transform: translateY(-15px);
+}
+
+.date-picker-x.to-top::before {
+	border-width: 10px 10px 0;
+	bottom: initial;
+	top: 100%;
 }
 
 .date-picker-x.active {
@@ -71,7 +89,6 @@
 	font-size: 22px;
 	line-height: 50px;
 	text-align: center;
-	-webkit-transition: .2s;
 	transition: .2s;
 	width: 50px;
 }

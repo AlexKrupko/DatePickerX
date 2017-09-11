@@ -1,5 +1,8 @@
 @import "variables";
 
+.date-picker-x-container {
+    position: relative;
+}
 .date-picker-x {
     background: $dpxBackgroundColor;
     box-sizing: content-box;
@@ -8,6 +11,7 @@
     font: 18px/1 Arial;
     padding: 10px;
     position: absolute;
+    top: 100%;
     transform: translateY(15px);
     user-select: none;
     width: $dpxDaySize * 7;
@@ -21,6 +25,17 @@
         content: "";
         left: 20px;
         position: absolute;
+    }
+    &.to-top {
+        bottom: 100%;
+        top: initial;
+        transform: translateY(-15px);
+
+        &::before {
+            border-width: 10px 10px 0;
+            bottom: initial;
+            top: 100%;
+        }
     }
     &.active {
         display: block;

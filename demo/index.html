@@ -13,7 +13,7 @@
 
             $min.DatePickerX.init({
                 mondayFirst: true,
-                minDate    : new Date(2016, 2, 1),
+                minDate    : new Date(2017, 8, 13),
                 maxDate    : $max
             });
 
@@ -46,12 +46,14 @@
     <input type="text" name="realDPX-min" placeholder="Choice start date">
 </label>
 
-<label class="real">
-    <input type="text" name="realDPX-max" placeholder="Choice end date">
-</label>
+<div style="margin-top: 80vh;">
+    <label class="real">
+        <input type="text" name="realDPX-max" placeholder="Choice end date">
+    </label>
+</div>
 
 
-<label>
+<label class="date-picker-x-container">
 <input type="text" name="dp">
 <div class="date-picker-x active" data-dpx-type="day">
     <div class="dpx-title-box">
@@ -117,7 +119,7 @@
 </div>
 </label>
 
-<label>
+<label class="date-picker-x-container">
 <input type="text" name="dp">
 <div class="date-picker-x active" data-dpx-type="month">
     <div class="dpx-title-box">
@@ -149,7 +151,7 @@
 </div>
 </label>
 
-<label>
+<label class="date-picker-x-container">
 <input type="text" name="dp">
 <div class="date-picker-x active" data-dpx-type="year">
     <div class="dpx-title-box">
