@@ -2,7 +2,7 @@
   "name": "DatePickerX",
   "title": "DatePickerX",
   "description": "Cool light visual date picker on pure JavaScript",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "homepage": "https://datepickerx.avrora.team",
   "repository": {
     "type": "git",
@@ -12,11 +12,6 @@
     {
       "name": "Alexander Krupko",
       "email": "alex@avrora.team",
-      "url": "www.avrora.team"
-    },
-    {
-      "name": "Slava Krasnyansky",
-      "email": "slava@avrora.team",
       "url": "www.avrora.team"
     }
   ],

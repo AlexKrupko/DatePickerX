@@ -28,12 +28,12 @@
     }
     &.to-top {
         bottom: 100%;
-        top: initial;
+        top: auto;
         transform: translateY(-15px);
 
         &::before {
             border-width: 10px 10px 0;
-            bottom: initial;
+            bottom: auto;
             top: 100%;
         }
     }

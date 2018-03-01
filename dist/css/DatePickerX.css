@@ -9,7 +9,7 @@
  * @copyright 2016 Avrora Team www.avrora.team
  * @license   MIT
  * @tutorial  http://datepickerx.avrora.team
- * @version   1.0.2
+ * @version   1.0.3
  */
 
 .date-picker-x-container {
@@ -47,14 +47,14 @@
 
 .date-picker-x.to-top {
 	bottom: 100%;
-	top: initial;
+	top: auto;
 	-webkit-transform: translateY(-15px);
 	transform: translateY(-15px);
 }
 
 .date-picker-x.to-top::before {
 	border-width: 10px 10px 0;
-	bottom: initial;
+	bottom: auto;
 	top: 100%;
 }
 

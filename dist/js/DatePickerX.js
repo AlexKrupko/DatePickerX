@@ -9,7 +9,7 @@
  * @copyright 2016 Avrora Team www.avrora.team
  * @license   MIT
  * @tutorial  http://datepickerx.avrora.team
- * @version   1.0.2
+ * @version   1.0.3
  */
 
 !function()
