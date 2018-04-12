@@ -194,7 +194,10 @@
                     elements.container.classList.remove('to-top');
 
                     var bcr = elements.container.getBoundingClientRect();
-                    bcr.bottom > window.innerHeight && bcr.top > elements.container.offsetHeight && elements.container.classList.add('to-top');
+                    if (bcr.bottom > window.innerHeight && bcr.top + input.offsetHeight > elements.container.offsetHeight) {
+                        elements.container.classList.add('to-top');
+                        elements.container.getBoundingClientRect().top < 0 && elements.container.classList.remove('to-top');
+                    }
 
                     openedDPX && openedDPX !== elements.container && openedDPX.classList.remove('active');
                     openedDPX = elements.container;
