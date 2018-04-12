@@ -9,8 +9,7 @@ module.exports = function (grunt)
  * Cool light visual date picker on pure JavaScript\n\
  * Browsers support: Chrome 45+, FireFox 40+, Safari 8+, IE10+, iOS Safari 8+, Android Browser 4.4+\n\
  *\n\
- * @author    Alexander Krupko <sanych.zp@gmail.com>\n\
- * @author    Slava Krasnyansky <krasnyansky.v@gmail.com>\n\
+ * @author    Alexander Krupko <alex@avrora.team>\n\
  * @copyright 2016 Avrora Team www.avrora.team\n\
  * @license   MIT\n\
  * @tutorial  http://datepickerx.avrora.team\n\

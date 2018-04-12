@@ -4,8 +4,7 @@
  * Cool light visual date picker on pure JavaScript
  * Browsers support: Chrome 45+, FireFox 40+, Safari 8+, IE10+, iOS Safari 8+, Android Browser 4.4+
  *
- * @author    Alexander Krupko <sanych.zp@gmail.com>
- * @author    Slava Krasnyansky <krasnyansky.v@gmail.com>
+ * @author    Alexander Krupko <alex@avrora.team>
  * @copyright 2016 Avrora Team www.avrora.team
  * @license   MIT
  * @tutorial  http://datepickerx.avrora.team
