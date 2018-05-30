@@ -5,7 +5,7 @@ Browsers support: Chrome 45+, FireFox 40+, Safari 8+, IE10+ (since 1.0.1 version
 
 ### How to install
 You need to include library javascript and CSS files from `dist` directory on your page
-```
+```html
 <link rel="stylesheet" href="dist/css/DatePickerX.min.css">
 <script src="dist/js/DatePickerX.min.js"></script>
 ``` 
@@ -52,4 +52,3 @@ Also DatePickerX provides global `DatePickerX` object with following methods:
 * `todayButtonLabel` - today button label. Default: `'Today'`
 * `clearButton` - if `true` clear button should be enabled. Date picker value will be cleared by clicking this button. Default: `true`
 * `clearButtonLabel` - clear button label. Default: `'Clear'`
-```
