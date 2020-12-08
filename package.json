@@ -22,18 +22,19 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "grunt": "^1.0.1",
-    "grunt-autoprefixer": "^3.0.4",
-    "grunt-combine-media-queries": "^1.0.20",
-    "grunt-contrib-clean": "^1.0.0",
-    "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-cssmin": "^1.0.1",
-    "grunt-contrib-uglify": "^1.0.1",
-    "grunt-contrib-watch": "^1.0.0",
-    "grunt-sass": "^2.1.0",
-    "load-grunt-tasks": "^3.5.0",
-    "npm": "^6.1.0",
-    "time-grunt": "^1.4.0"
+    "grunt": "*",
+    "grunt-autoprefixer": "*",
+    "grunt-combine-media-queries": "*",
+    "grunt-contrib-clean": "*",
+    "grunt-contrib-copy": "*",
+    "grunt-contrib-cssmin": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-watch": "*",
+    "grunt-sass": "*",
+    "node-sass": "*",
+    "load-grunt-tasks": "*",
+    "npm": "*",
+    "time-grunt": "*"
   },
   "dependencies": {}
 }

@@ -1,5 +1,7 @@
 module.exports = function (grunt)
 {
+    const sass = require('node-sass');
+
     require('time-grunt')(grunt);
     require('load-grunt-tasks')(grunt);
 
@@ -9,10 +11,9 @@ module.exports = function (grunt)
  * Cool light visual date picker on pure JavaScript\n\
  * Browsers support: Chrome 45+, FireFox 40+, Safari 8+, IE10+, iOS Safari 8+, Android Browser 4.4+\n\
  *\n\
- * @author    Alexander Krupko <alex@avrora.team>\n\
- * @copyright 2016 Avrora Team www.avrora.team\n\
+ * @author    Alexander Krupko <sanych.zp@gmail.com>\n\
+ * @copyright 2016 Alexander Krupko\n\
  * @license   MIT\n\
- * @tutorial  http://datepickerx.avrora.team\n\
  * @version   ' + grunt.file.readJSON('package.json').version + '\n\
  */\n';
 
@@ -22,7 +23,8 @@ module.exports = function (grunt)
             options: {
                 sourceMap  : false,
                 outputStyle: 'expanded',
-                indentWidth: 4
+                indentWidth: 4,
+                implementation: sass
             },
             dev: {
                 files  : [{
