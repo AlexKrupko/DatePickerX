@@ -14,9 +14,9 @@
         todayButtonLabel : 'Today',
         clearButton      : true,
         clearButtonLabel : 'Clear',
-        titleFormatDay   : '{MM} {dd}, {yyyy}',
-        titleFormatMonth : '{MM} {yyyy}',
-        titleFormatYear  : '{yyyy}'
+        titleFormatDay   : 'MM dd, yyyy',
+        titleFormatMonth : 'MM yyyy',
+        titleFormatYear  : 'yyyy'
     },
         openedDPX = null;
 
@@ -143,9 +143,8 @@
          *      MM   - full month name
          *      yy   - 2-digits year number
          *      yyyy - 4-digits year number
-         * @param {Boolean} [useBrackets=false] If true, literals should be wrapped to curly brackets
          */
-        function getFormatedDate(dt, format, useBrackets)
+        function getFormatedDate(dt, format)
         {
             var items = {
                 d   : dt.getDate(),
@@ -165,10 +164,9 @@
             items.M = options.shortMonthLabels[items.M];
             items.MM = options.singleMonthLabels[items.MM];
 
-            var regexp = useBrackets ? /\{([dmM]{1,2}|D|yyyy|yy)\}/g : /([dmM]{1,2}|D|yyyy|yy)/g;
-            return format.replace(regexp, function(match, literal)
+            return format.replace(/([dmM]{1,2}|D|yyyy|yy)/g, function(match)
             {
-                return typeof items[literal] !== 'undefined' ? items[literal] : match;
+                return typeof items[match] !== 'undefined' ? items[match] : match;
             });
         }
 
@@ -303,25 +301,23 @@
 
             // set title
             elements.title.innerHTML = mode
-                ? getFormatedDate(dt, mode === 2 ? options.titleFormatMonth : options.titleFormatYear, true)
+                ? getFormatedDate(dt, mode === 2 ? options.titleFormatMonth : options.titleFormatYear)
                 : (zeroYear + ' - ' + (zeroYear + 9));
             elements.title.dpxValue = dt.getTime();
-            elements.title.title = mode === 2
-                ? getFormatedDate(dt, options.titleFormatYear, true)
-                : (zeroYear + ' - ' + (zeroYear + 9));
+            elements.title.title = mode === 2 ? getFormatedDate(dt, options.titleFormatYear) : (zeroYear + ' - ' + (zeroYear + 9));
 
             // prev and next arrows
             elements.prevTitle.classList[dt.getTime() <= dtMin ? 'add' : 'remove']('dpx-disabled');
             mode === 2 ? dt.setMonth(setMonth - 1) : dt.setFullYear(mode ? setYear - 1 : zeroYear - 10);
             elements.prevTitle.title = mode
-                ? getFormatedDate(dt, mode === 2 ? options.titleFormatMonth : options.titleFormatYear, true)
+                ? getFormatedDate(dt, mode === 2 ? options.titleFormatMonth : options.titleFormatYear)
                 : ((zeroYear - 10) + ' - ' + (zeroYear - 1));
             elements.prevTitle.dpxValue = dt.getTime();
 
             mode === 2 ? dt.setMonth(dt.getMonth() + 2) : dt.setFullYear(mode ? setYear + 1 : zeroYear + 20);
             elements.nextTitle.classList[dt.getTime() > dtMax ? 'add' : 'remove']('dpx-disabled');
             elements.nextTitle.title = mode
-                ? getFormatedDate(dt, mode === 2 ? options.titleFormatMonth : options.titleFormatYear, true)
+                ? getFormatedDate(dt, mode === 2 ? options.titleFormatMonth : options.titleFormatYear)
                 : ((zeroYear + 10) + ' - ' + (zeroYear + 19));
             elements.nextTitle.dpxValue = dt.getTime();
 
@@ -369,7 +365,7 @@
                 i      = mode === 2 ? 42 : 16;
             for (; i--; dt[setter](dt[getter]() + 1)) {
                 var classes = ['dpx-item'],
-                    title   = getFormatedDate(dt, [options.titleFormatYear, options.titleFormatMonth, options.titleFormatDay][mode], true);
+                    title   = getFormatedDate(dt, [options.titleFormatYear, options.titleFormatMonth, options.titleFormatDay][mode]);
 
                 (mode ? (mode === 2 ? dt.getMonth() !== setMonth : dt.getFullYear() !== setYear) : (dt.getFullYear() < zeroYear || dt.getFullYear() > zeroYear + 9)) && classes.push('dpx-out');
                 mode === 2 && (dt.getDay() === 6 || dt.getDay() === 0) && classes.push('dpx-weekend');

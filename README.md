@@ -52,6 +52,6 @@ Also DatePickerX provides global `DatePickerX` object with following methods:
 * `todayButtonLabel` - today button label. Default: `'Today'`
 * `clearButton` - if `true` clear button should be enabled. Date picker value will be cleared by clicking this button. Default: `true`
 * `clearButtonLabel` - clear button label. Default: `'Clear'`
-* `titleFormatDay` - Title format for day value items. All literals from the `format` property can be used. Each literal should be wrapped in curly brackets. Default: `'{MM} {dd}, {yyyy}'` 
-* `titleFormatMonth` - Title format for month value items. All literals from the `format` property can be used. Each literal should be wrapped in curly brackets. Default: `'{MM} {yyyy}'` 
-* `titleFormatYear` - Title format for year value items. All literals from the `format` property can be used. Each literal should be wrapped in curly brackets. Default: `'{yyyy}'` 
+* `titleFormatDay` - Title format for day value items. All literals from the `format` property can be used. Default: `'MM dd, yyyy'` 
+* `titleFormatMonth` - Title format for month value items. All literals from the `format` property can be used. Default: `'MM yyyy'` 
+* `titleFormatYear` - Title format for year value items. All literals from the `format` property can be used. Default: `'yyyy'` 
