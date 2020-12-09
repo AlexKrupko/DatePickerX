@@ -3,16 +3,14 @@
   "title": "DatePickerX",
   "description": "Cool light visual date picker on pure JavaScript",
   "version": "1.0.6",
-  "homepage": "https://datepickerx.avrora.team",
   "repository": {
     "type": "git",
-    "url": "https://github.com/AvroraTeam/DatePickerX"
+    "url": "https://github.com/AlexKrupko/DatePickerX"
   },
   "contributors": [
     {
       "name": "Alexander Krupko",
-      "email": "alex@avrora.team",
-      "url": "www.avrora.team"
+      "email": "sanych.zp@gmail.com"
     }
   ],
   "keywords": [
