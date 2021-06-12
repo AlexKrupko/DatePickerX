@@ -13,14 +13,19 @@
 
             $min.DatePickerX.init({
                 mondayFirst: true,
-                minDate    : new Date(2017, 8, 13),
+                minDate    : new Date(2021, 5, 9),
                 maxDate    : $max
             });
 
             $max.DatePickerX.init({
                 mondayFirst: true,
                 minDate    : $min,
-                //maxDate    : new Date(2017, 4, 25)
+                maxDate    : function()
+                {
+                    var date = new Date();
+                    return new Date().setDate(date.getDate() + 10);
+                },
+                clearButton: false
             });
 
         });
@@ -42,147 +47,15 @@
 </head>
 <body>
 
-<label class="real">
-    <input type="text" name="realDPX-min" placeholder="Choice start date">
-</label>
+<div>
+    <label class="real">
+        <input type="text" name="realDPX-min" placeholder="Choice start date">
+    </label>
 
-<div style="margin-top: 80vh;">
     <label class="real">
         <input type="text" name="realDPX-max" placeholder="Choice end date">
     </label>
 </div>
-
-
-<label class="date-picker-x-container">
-<input type="text" name="dp">
-<div class="date-picker-x active" data-dpx-type="day">
-    <div class="dpx-title-box">
-        <span class="dpx-prev" title="March 2016">&#x276e;</span>
-        <span class="dpx-title" title="2016">April 2016</span>
-        <span class="dpx-next" title="May 2016">&#x276f;</span>
-    </div>
-    <div class="dpx-content-box">
-        <span class="dpx-item dpx-weekday">Mo</span>
-        <span class="dpx-item dpx-weekday">Tu</span>
-        <span class="dpx-item dpx-weekday">We</span>
-        <span class="dpx-item dpx-weekday">Th</span>
-        <span class="dpx-item dpx-weekday">Fr</span>
-        <span class="dpx-item dpx-weekday dpx-weekend">St</span>
-        <span class="dpx-item dpx-weekday dpx-weekend">Su</span>
-        <span class="dpx-item dpx-out" title="March 28, 2016">28</span>
-        <span class="dpx-item dpx-out" title="March 29, 2016">29</span>
-        <span class="dpx-item dpx-out" title="">30</span>
-        <span class="dpx-item dpx-out" title="">31</span>
-        <span class="dpx-item" title="">1</span>
-        <span class="dpx-item dpx-weekend" title="">2</span>
-        <span class="dpx-item dpx-weekend" title="">3</span>
-        <span class="dpx-item" title="">4</span>
-        <span class="dpx-item" title="">5</span>
-        <span class="dpx-item" title="">6</span>
-        <span class="dpx-item" title="">7</span>
-        <span class="dpx-item" title="">8</span>
-        <span class="dpx-item dpx-weekend" title="">9</span>
-        <span class="dpx-item dpx-weekend" title="">10</span>
-        <span class="dpx-item" title="">11</span>
-        <span class="dpx-item" title="">12</span>
-        <span class="dpx-item dpx-selected" title="">13</span>
-        <span class="dpx-item" title="">14</span>
-        <span class="dpx-item" title="">15</span>
-        <span class="dpx-item dpx-weekend dpx-current" title="">16</span>
-        <span class="dpx-item dpx-weekend" title="">17</span>
-        <span class="dpx-item" title="">18</span>
-        <span class="dpx-item" title="">19</span>
-        <span class="dpx-item" title="">20</span>
-        <span class="dpx-item dpx-disabled" title="">21</span>
-        <span class="dpx-item dpx-disabled" title="">22</span>
-        <span class="dpx-item dpx-weekend dpx-disabled" title="">23</span>
-        <span class="dpx-item dpx-weekend dpx-disabled" title="">24</span>
-        <span class="dpx-item dpx-disabled" title="">25</span>
-        <span class="dpx-item dpx-disabled" title="">26</span>
-        <span class="dpx-item dpx-disabled" title="">27</span>
-        <span class="dpx-item dpx-disabled" title="">28</span>
-        <span class="dpx-item dpx-disabled" title="">29</span>
-        <span class="dpx-item dpx-weekend dpx-disabled" title="">30</span>
-        <span class="dpx-item dpx-weekend dpx-out dpx-disabled" title="">1</span>
-        <span class="dpx-item dpx-disabled dpx-out" title="">2</span>
-        <span class="dpx-item dpx-disabled dpx-out" title="">3</span>
-        <span class="dpx-item dpx-disabled dpx-out" title="">4</span>
-        <span class="dpx-item dpx-disabled dpx-out" title="">5</span>
-        <span class="dpx-item dpx-disabled dpx-out" title="">6</span>
-        <span class="dpx-item dpx-disabled dpx-out dpx-weekend" title="">7</span>
-        <span class="dpx-item dpx-disabled dpx-out dpx-weekend" title="">8</span>
-    </div>
-    <div class="dpx-btns">
-        <span class="dpx-item dpx-today">Today</span>
-        <span class="dpx-item dpx-clear">Clear</span>
-    </div>
-</div>
-</label>
-
-<label class="date-picker-x-container">
-<input type="text" name="dp">
-<div class="date-picker-x active" data-dpx-type="month">
-    <div class="dpx-title-box">
-        <span class="dpx-prev" title="2015">&#x276e;</span>
-        <span class="dpx-title" title="2010 - 2019">2016</span>
-        <span class="dpx-next" title="2017">&#x276f;</span>
-    </div>
-    <div class="dpx-content-box">
-        <span class="dpx-item dpx-out" title="November 2015">Nov</span>
-        <span class="dpx-item dpx-out" title="December 1015">Dec</span>
-        <span class="dpx-item" title="January">Jan</span>
-        <span class="dpx-item" title="">Feb</span>
-        <span class="dpx-item" title="">Mar</span>
-        <span class="dpx-item dpx-current" title="">Apr</span>
-        <span class="dpx-item" title="">May</span>
-        <span class="dpx-item dpx-selected" title="">Jun</span>
-        <span class="dpx-item" title="">Jul</span>
-        <span class="dpx-item" title="">Aug</span>
-        <span class="dpx-item" title="">Sep</span>
-        <span class="dpx-item dpx-disabled" title="">Oct</span>
-        <span class="dpx-item dpx-disabled" title="">Nov</span>
-        <span class="dpx-item dpx-disabled" title="">Dec</span>
-        <span class="dpx-item dpx-out dpx-disabled" title="">Jan</span>
-        <span class="dpx-item dpx-out dpx-disabled" title="">Feb</span>
-    </div>
-    <div class="dpx-btns">
-        <span class="dpx-item dpx-clear">Clear</span>
-    </div>
-</div>
-</label>
-
-<label class="date-picker-x-container">
-<input type="text" name="dp">
-<div class="date-picker-x active" data-dpx-type="year">
-    <div class="dpx-title-box">
-        <span class="dpx-prev" title="2000 - 2009">&#x276e;</span>
-        <span class="dpx-title">2010 - 2019</span>
-        <span class="dpx-next dpx-disabled" title="2020 - 2029">&#x276f;</span>
-    </div>
-    <div class="dpx-content-box">
-        <span class="dpx-item dpx-out" title="2007">2007</span>
-        <span class="dpx-item dpx-out" title="2008">2008</span>
-        <span class="dpx-item dpx-out" title="2009">2009</span>
-        <span class="dpx-item" title="2010">2010</span>
-        <span class="dpx-item" title="2011">2011</span>
-        <span class="dpx-item" title="2012">2012</span>
-        <span class="dpx-item" title="2013">2013</span>
-        <span class="dpx-item" title="2014">2014</span>
-        <span class="dpx-item" title="2015">2015</span>
-        <span class="dpx-item dpx-current dpx-selected" title="2016">2016</span>
-        <span class="dpx-item" title="2017">2017</span>
-        <span class="dpx-item" title="2018">2018</span>
-        <span class="dpx-item dpx-disabled" title="2019">2019</span>
-        <span class="dpx-item dpx-out dpx-disabled" title="2020">2020</span>
-        <span class="dpx-item dpx-out dpx-disabled" title="2021">2021</span>
-        <span class="dpx-item dpx-out dpx-disabled" title="2022">2022</span>
-    </div>
-    <div class="dpx-btns">
-        <span class="dpx-item dpx-today">Today</span>
-    </div>
-</div>
-</label>
-
 
 </body>
 </html>

@@ -2,12 +2,12 @@
  * DatePickerX
  *
  * Cool light visual date picker on pure JavaScript
- * Browsers support: Chrome 45+, FireFox 40+, Safari 8+, IE10+, iOS Safari 8+, Android Browser 4.4+
+ * Browsers support: Chrome 45+, FireFox 40+, Safari 8+, IE 11+, Edge 15+, iOS Safari, Android Google Chrome
  *
- * @author    Alexander Krupko <sanych.zp@gmail.com>
+ * @author    Alexander Krupko <alex.krupko@ukr.net>
  * @copyright 2016 Alexander Krupko
  * @license   MIT
- * @version   1.0.7
+ * @version   1.1.0
  */
 
 !function()
@@ -48,6 +48,7 @@
         !Array.isArray(classes) && (classes = [classes]);
 
         var el = document.createElement(tag);
+        tag === 'button' && el.setAttribute('type', 'button');
         for (var i = classes.length; i--; el.classList.add(classes[i]));
 
         title && (el.title = title);
@@ -72,11 +73,11 @@
 
     function DPX(input)
     {
-        var options  = {},
-            elements = {},
-            inited   = false,
-            value    = null,
-            mode     = 2; // 2 - days, 1 - months, 0 - years
+        var options    = {},
+            elements   = {},
+            initiated  = false,
+            value      = null,
+            mode       = 2; // 2 - days, 1 - months, 0 - years
 
         /**
          * Returns min date of date picker
@@ -92,6 +93,13 @@
                 value = value.DatePickerX.getValue(true);
                 value = value === null ? options.minDate.DatePickerX.getMinDate() : new Date(value);
                 value.setDate(value.getDate() + 1);
+            } else if (typeof value === 'function') {
+                value = new Date(value());
+
+                if (isNaN(value)) {
+                    console.error('DatePickerX, getMinDate: Invalid date value.');
+                    value = optionsDefault.minDate;
+                }
             }
 
             return clearDate(value);
@@ -111,6 +119,13 @@
                 value = value.DatePickerX.getValue(true);
                 value = value === null ? options.maxDate.DatePickerX.getMaxDate() : new Date(value);
                 value.setDate(value.getDate() - 1);
+            } else if (typeof value === 'function') {
+                value = new Date(value());
+
+                if (isNaN(value)) {
+                    console.error('DatePickerX, getMaxDate: Invalid date value.');
+                    value = optionsDefault.maxDate;
+                }
             }
 
             return clearDate(value);
@@ -124,9 +139,9 @@
             elements.container = createElement('div', 'date-picker-x');
 
             var titleBox = createElement('div', 'dpx-title-box', elements.container);
-            elements.prevTitle = createElement('span', 'dpx-prev', titleBox, '&#x276e;');
-            elements.title = createElement('span', 'dpx-title', titleBox);
-            elements.nextTitle = createElement('span', 'dpx-next', titleBox, '&#x276f;');
+            elements.prevTitle = createElement('button', 'dpx-prev', titleBox, '&#x276e;');
+            elements.title = createElement('button', 'dpx-title', titleBox);
+            elements.nextTitle = createElement('button', 'dpx-next', titleBox, '&#x276f;');
 
             elements.content = createElement('div', 'dpx-content-box', elements.container);
 
@@ -136,8 +151,8 @@
 
             if (options.todayButton || options.clearButton) {
                 var btns = createElement('div', 'dpx-btns', elements.container);
-                options.todayButton && (elements.today = createElement('span', ['dpx-item', 'dpx-today'], btns, options.todayButtonLabel, options.todayButtonLabel));
-                options.clearButton && (elements.clear = createElement('span', ['dpx-item', 'dpx-clear'], btns, options.clearButtonLabel, options.clearButtonLabel));
+                options.todayButton && (elements.today = createElement('button', ['dpx-item', 'dpx-today'], btns, options.todayButtonLabel, options.todayButtonLabel));
+                options.clearButton && (elements.clear = createElement('button', ['dpx-item', 'dpx-clear'], btns, options.clearButtonLabel, options.clearButtonLabel));
             }
         }
 
@@ -156,7 +171,7 @@
          *      yy   - 2-digits year number
          *      yyyy - 4-digits year number
          */
-        function getFormatedDate(dt, format)
+        function getFormattedDate(dt, format)
         {
             var items = {
                 d   : dt.getDate(),
@@ -193,35 +208,105 @@
         }
 
         /**
+         * Opens DatePickerX dropdown
+         *
+         * @param {Object} e
+         */
+        function openDatePicker(e)
+        {
+            if (!isActive()) {
+                e.stopPropagation();
+                mode = 2;
+                draw();
+                elements.container.classList.add('active');
+                elements.container.classList.remove('to-top');
+
+                var bcr = elements.container.getBoundingClientRect();
+                if (bcr.bottom > window.innerHeight && bcr.top + input.offsetHeight > elements.container.offsetHeight) {
+                    elements.container.classList.add('to-top');
+                    elements.container.getBoundingClientRect().top < 0 && elements.container.classList.remove('to-top');
+                }
+
+                openedDPX && openedDPX !== elements.container && closeDatePicker();
+                openedDPX = elements.container;
+
+                var focusableElements = Array.prototype.slice.call(elements.container.querySelectorAll('button'));
+                Array.prototype.slice.call(
+                    document.querySelectorAll('[href], input, select, textarea, button, iframe, object, embed, [tabindex], [contenteditable]')
+                ).filter(function(item)
+                {
+                    return focusableElements.indexOf(item) < 0;
+                }).forEach(function(item)
+                {
+                    item.dataset.datepickerxDisabledTabIndex = item.tabIndex;
+                    item.tabIndex = -1;
+                });
+
+                focusableElements.forEach(function(item)
+                {
+                    item.tabIndex = 0;
+                });
+            }
+        }
+
+        /**
+         * Closes opened DatePickerX dropdown
+         */
+        function closeDatePicker()
+        {
+            if (openedDPX) {
+                openedDPX.classList.remove('active');
+
+                Array.prototype.slice.call(document.querySelectorAll('[data-datepickerx-disabled-tab-index]')).forEach(function(item)
+                {
+                    item.tabIndex = item.dataset.datepickerxDisabledTabIndex;
+                    delete item.dataset.datepickerxDisabledTabIndex;
+                });
+
+                Array.prototype.slice.call(openedDPX.querySelectorAll('button')).forEach(function(item)
+                {
+                    item.tabIndex = -1;
+                });
+            }
+        }
+
+        /**
          * Attaches event listeners
          *
          * @param dpx
          */
         function addEvents(dpx)
         {
-            input.addEventListener('click', function(e)
+            var arrowsKeyMap = {
+                37: 'left',
+                38: 'top',
+                39: 'right',
+                40: 'bottom'
+            };
+
+            input.addEventListener('click', openDatePicker);
+            window.addEventListener('keydown', function(event)
             {
-                if (!isActive()) {
-                    e.stopPropagation();
-                    mode = 2;
-                    draw();
-                    elements.container.classList.add('active');
-                    elements.container.classList.remove('to-top');
-
-                    var bcr = elements.container.getBoundingClientRect();
-                    if (bcr.bottom > window.innerHeight && bcr.top + input.offsetHeight > elements.container.offsetHeight) {
-                        elements.container.classList.add('to-top');
-                        elements.container.getBoundingClientRect().top < 0 && elements.container.classList.remove('to-top');
+                if (event.keyCode === 13) {
+                    if (document.activeElement === input) {
+                        event.preventDefault();
+                        openDatePicker(event);
                     }
+                } else if (event.keyCode === 27) {
+                    event.preventDefault();
+                    closeDatePicker();
+                } else if (isActive() && event.keyCode in arrowsKeyMap) {
+                    event.preventDefault();
 
-                    openedDPX && openedDPX !== elements.container && openedDPX.classList.remove('active');
-                    openedDPX = elements.container;
+                    var focusableElements = Array.prototype.slice.call(elements.container.querySelectorAll('button:enabled'));
+                    if (document.activeElement && focusableElements.indexOf(document.activeElement) >= 0) {
+                        document.activeElement.neighbors && document.activeElement.neighbors[arrowsKeyMap[event.keyCode]].focus();
+                    } else {
+                        focusableElements[0].focus();
+                    }
                 }
             });
-            window.addEventListener('click', function()
-            {
-                openedDPX && openedDPX.classList.remove('active');
-            });
+            window.addEventListener('click', closeDatePicker);
             elements.container.addEventListener('click', function(e)
             {
                 e.stopPropagation();
@@ -230,7 +315,7 @@
             elements.content.addEventListener('click', function(e)
             {
                 if (mode === 2) {
-                    dpx.setValue(e.target.dpxValue) && elements.container.classList.remove('active');
+                    dpx.setValue(e.target.dpxValue) && closeDatePicker();
                 } else {
                     var min = getMinDate(),
                         max = getMaxDate();
@@ -260,11 +345,11 @@
             });
             elements.today && elements.today.addEventListener('click', function()
             {
-                !this.classList.contains('dpx-disabled') && dpx.setValue(clearDate()) && elements.container.classList.remove('active');
+                !this.disabled && dpx.setValue(clearDate()) && closeDatePicker();
             });
             elements.clear && elements.clear.addEventListener('click', function()
             {
-                dpx.setValue(null) && elements.container.classList.remove('active');
+                dpx.setValue(null) && closeDatePicker();
             });
         }
 
@@ -283,7 +368,7 @@
                 current = clearDate();
 
             // today button
-            options.todayButton && elements.today.classList[current >= dtMin && current <= dtMax ? 'remove' : 'add']('dpx-disabled');
+            options.todayButton && (elements.today.disabled = current < dtMin || current > dtMax);
 
             // set min and max dates according to current mode
             if (mode < 2) {
@@ -313,23 +398,24 @@
 
             // set title
             elements.title.innerHTML = mode
-                ? getFormatedDate(dt, mode === 2 ? options.titleFormatMonth : options.titleFormatYear)
+                ? getFormattedDate(dt, mode === 2 ? options.titleFormatMonth : options.titleFormatYear)
                 : (zeroYear + ' - ' + (zeroYear + 9));
             elements.title.dpxValue = dt.getTime();
-            elements.title.title = mode === 2 ? getFormatedDate(dt, options.titleFormatYear) : (zeroYear + ' - ' + (zeroYear + 9));
+            elements.title.title = mode === 2 ? getFormattedDate(dt, options.titleFormatYear) : (zeroYear + ' - ' + (zeroYear + 9));
+            elements.title.disabled = !mode;
 
             // prev and next arrows
-            elements.prevTitle.classList[dt.getTime() <= dtMin ? 'add' : 'remove']('dpx-disabled');
+            elements.prevTitle.disabled = dt.getTime() <= dtMin;
             mode === 2 ? dt.setMonth(setMonth - 1) : dt.setFullYear(mode ? setYear - 1 : zeroYear - 10);
             elements.prevTitle.title = mode
-                ? getFormatedDate(dt, mode === 2 ? options.titleFormatMonth : options.titleFormatYear)
+                ? getFormattedDate(dt, mode === 2 ? options.titleFormatMonth : options.titleFormatYear)
                 : ((zeroYear - 10) + ' - ' + (zeroYear - 1));
             elements.prevTitle.dpxValue = dt.getTime();
 
             mode === 2 ? dt.setMonth(dt.getMonth() + 2) : dt.setFullYear(mode ? setYear + 1 : zeroYear + 20);
-            elements.nextTitle.classList[dt.getTime() > dtMax ? 'add' : 'remove']('dpx-disabled');
+            elements.nextTitle.disabled = dt.getTime() > dtMax;
             elements.nextTitle.title = mode
-                ? getFormatedDate(dt, mode === 2 ? options.titleFormatMonth : options.titleFormatYear)
+                ? getFormattedDate(dt, mode === 2 ? options.titleFormatMonth : options.titleFormatYear)
                 : ((zeroYear + 10) + ' - ' + (zeroYear + 19));
             elements.nextTitle.dpxValue = dt.getTime();
 
@@ -354,17 +440,8 @@
                 mode ? dt.setMonth(dt.getMonth() - 2) : dt.setFullYear(zeroYear - 3);
             }
 
-            // current and selected dates
-            var //current  = clearDate(),
-                selected = value;
+            // current date
             if (mode < 2) {
-                if (selected !== null) {
-                    selected = new Date(selected);
-                    selected.setDate(1);
-                    !mode && selected.setMonth(0);
-                    selected = selected.getTime();
-                }
-
                 current.setDate(1);
                 !mode && current.setMonth(0);
             }
@@ -374,20 +451,125 @@
             elements.container.setAttribute('data-dpx-type', ['year', 'month', 'day'][mode]);
             var getter = ['getFullYear', 'getMonth', 'getDate'][mode],
                 setter = ['setFullYear', 'setMonth', 'setDate'][mode],
-                i      = mode === 2 ? 42 : 16;
-            for (; i--; dt[setter](dt[getter]() + 1)) {
+                rows   = mode === 2 ? 6 : 4,
+                cols   = mode === 2 ? 7 : 4,
+                items  = [];
+
+            for (var i = rows * cols; i--; dt[setter](dt[getter]() + 1)) {
                 var classes = ['dpx-item'],
-                    title   = getFormatedDate(dt, [options.titleFormatYear, options.titleFormatMonth, options.titleFormatDay][mode]);
+                    title   = getFormattedDate(dt, [options.titleFormatYear, options.titleFormatMonth, options.titleFormatDay][mode]);
 
                 (mode ? (mode === 2 ? dt.getMonth() !== setMonth : dt.getFullYear() !== setYear) : (dt.getFullYear() < zeroYear || dt.getFullYear() > zeroYear + 9)) && classes.push('dpx-out');
                 mode === 2 && (dt.getDay() === 6 || dt.getDay() === 0) && classes.push('dpx-weekend');
                 dt.getTime() === current && classes.push('dpx-current');
                 dt.getTime() === value && classes.push('dpx-selected');
-                (dt.getTime() < dtMin || dt.getTime() > dtMax) && classes.push('dpx-disabled');
 
                 var content = mode ? (mode === 2 ? dt.getDate() : options.shortMonthLabels[dt.getMonth()]) : dt.getFullYear(),
-                    el = createElement('span', classes, elements.content, content, title);
+                    el = createElement('button', classes, elements.content, content, title);
                 el.dpxValue = dt.getTime();
+                el.disabled = dt.getTime() < dtMin || dt.getTime() > dtMax;
+                items.push(el);
+            }
+
+            // set neighbor elements
+            setNeighborElements(items, rows, cols);
+        }
+
+        /**
+         * Sets neighbor elements for each focusable calendar element
+         *
+         * @param {Array<HTMLElement>} items Calendar elements
+         * @param {Number}             rows  Amount of rows
+         * @param {Number}             cols  Amount of columns
+         */
+        function setNeighborElements(items, rows, cols)
+        {
+            var topElements = [];
+            !elements.prevTitle.disabled && topElements.push(elements.prevTitle);
+            !elements.title.disabled && topElements.push(elements.title);
+            !elements.nextTitle.disabled && topElements.push(elements.nextTitle);
+
+            var bottomElements = [];
+            elements.today && !elements.today.disabled && bottomElements.push(elements.today);
+            elements.clear && bottomElements.push(elements.clear);
+
+            var focusableElements = items.filter(function(item)
+            {
+                return !item.disabled;
+            });
+
+            topElements.forEach(function(item, index, array)
+            {
+                addHorizontalNeighbors(item, index, array);
+                item.neighbors.bottom = focusableElements[0];
+                item.neighbors.top = bottomElements.length ? bottomElements[0] : focusableElements[focusableElements.length - 1];
+            });
+            bottomElements.forEach(function(item, index, array)
+            {
+                addHorizontalNeighbors(item, index, array);
+                item.neighbors.top = focusableElements[focusableElements.length - 1];
+                item.neighbors.bottom = topElements.length ? topElements[0] : focusableElements[0];
+            });
+
+            function getTopLineElement(index)
+            {
+                if (!topElements.length) {
+                    return null;
+                } else if (topElements.length === 1) {
+                    return topElements[0];
+                } else if (elements.title.disabled) {
+                    return topElements[Math.floor(index / Math.ceil(cols / 2))];
+                }
+
+                return [
+                    elements.prevTitle.disabled ? elements.title : elements.prevTitle,
+                    elements.prevTitle.disabled || cols < 7 ? elements.title : elements.prevTitle,
+                    elements.title,
+                    elements.nextTitle.disabled || cols > 4 ? elements.title : elements.nextTitle,
+                    elements.title,
+                    elements.nextTitle.disabled ? elements.title : elements.nextTitle,
+                    elements.nextTitle.disabled ? elements.title : elements.nextTitle
+                ][index];
+            }
+
+            function getBottomLineElement(index)
+            {
+                return bottomElements.length ? bottomElements[Math.floor(index / Math.ceil(cols / bottomElements.length))] : null;
+            }
+
+            function addHorizontalNeighbors(item, index, array)
+            {
+                item.neighbors = {
+                    left: array[index > 0 ? index - 1 : array.length - 1],
+                    right: array[index < array.length - 1 ? index + 1 : 0]
+                };
+            }
+
+            for (var i = 0; i < cols * rows; i += cols) {
+                items.slice(i, i + cols).filter(function(item)
+                {
+                    return !item.disabled;
+                }).forEach(addHorizontalNeighbors);
+            }
+
+            for (var i = 0; i < cols; i++) {
+                items.filter(function(item, index)
+                {
+                    return !item.disabled && index % cols === i;
+                }).forEach(function(item, index, array)
+                {
+                    if (!index) {
+                        item.neighbors.top = getTopLineElement(i) || getBottomLineElement(i) || array[array.length - 1];
+                    } else {
+                        item.neighbors.top = array[index - 1];
+                    }
+
+                    if (index === array.length - 1) {
+                        item.neighbors.bottom = getBottomLineElement(i) || getTopLineElement(i) || array[0];
+                    } else {
+                        item.neighbors.bottom = array[index + 1];
+                    }
+                });
             }
         }
 
@@ -404,7 +586,7 @@
             }
 
             if (option === 'minDate' || option === 'maxDate') {
-                if (!(value instanceof HTMLInputElement)) {
+                if (!(value instanceof HTMLInputElement) && typeof value !== 'function') {
                     !(value instanceof Date) && (value = new Date(value));
 
                     if (isNaN(value)) {
@@ -435,10 +617,10 @@
             {
                 initOptions = initOptions || {};
 
-                if (inited) {
-                    return console.error('DatePickerX, init: Date picker have already inited.') && false;
+                if (initiated) {
+                    return console.error('DatePickerX, init: Date picker has been already initiated.') && false;
                 }
-                inited = true;
+                initiated = true;
 
                 // set options
                 options = {};
@@ -471,13 +653,13 @@
              */
             remove: function()
             {
-                if (!inited) {
-                    return console.error('DatePickerX, remove: Date picker doesn\'t init yet.') && false;
+                if (!initiated) {
+                    return console.error('DatePickerX, remove: Date picker has not been initiated yet.') && false;
                 }
 
                 input.parentNode.removeChild(elements.container);
                 input.classList.remove('date-picker-x-input');
-                input.readOnly = inited = false;
+                input.readOnly = initiated = false;
 
                 return true;
             },
@@ -493,8 +675,8 @@
              */
             setValue: function(dt, ignoreLimits)
             {
-                if (!inited) {
-                    return console.error('DatePickerX, remove: Date picker doesn\'t init yet.') && false;
+                if (!initiated) {
+                    return console.error('DatePickerX, remove: Date picker has not been initiated yet.') && false;
                 }
 
                 if (dt === null) {
@@ -512,7 +694,7 @@
                     }
 
                     value = dt.getTime();
-                    input.value = getFormatedDate(dt, options.format);
+                    input.value = getFormattedDate(dt, options.format);
                 }
 
                 var e = document.createEvent('Event');
@@ -525,16 +707,16 @@
 
             /**
              * Returns formatted date picker value or timestamp if passed true in first parameter.
-             * If value doesn't choosed yet returns empty string or null if passed true in first parameter.
+             * If value has not been chosen yet returns empty string or null if passed true in first parameter.
              *
              * @param   {Boolean}       [timestamp]
              * @returns {Number|String}
              */
             getValue: function(timestamp)
             {
-                !inited && console.error('DatePickerX, getValue: Date picker doesn\'t init yet.');
+                !initiated && console.error('DatePickerX, getValue: Date picker has not been initiated yet.');
 
-                return timestamp ? value : (value === null ? '' : getFormatedDate(new Date(value), options.format));
+                return timestamp ? value : (value === null ? '' : getFormattedDate(new Date(value), options.format));
             },
 
             /**
@@ -546,7 +728,16 @@
             getMinDate: function()
             {
                 var value = options.minDate;
-                value instanceof HTMLInputElement && (value = value.DatePickerX.getMinDate());
+                if (value instanceof HTMLInputElement) {
+                    value = value.DatePickerX.getMinDate();
+                } else if (typeof value === 'function') {
+                    value = new Date(value());
+
+                    if (isNaN(value)) {
+                        console.error('DatePickerX, getMinDate: Invalid date value.');
+                        value = optionsDefault.minDate;
+                    }
+                }
 
                 return clearDate(value);
             },
@@ -560,7 +751,16 @@
             getMaxDate: function()
             {
                 var value = options.maxDate;
-                value instanceof HTMLInputElement && (value = value.DatePickerX.getMaxDate());
+                if (value instanceof HTMLInputElement) {
+                    value = value.DatePickerX.getMaxDate()
+                } else if (typeof value === 'function') {
+                    value = new Date(value());
+
+                    if (isNaN(value)) {
+                        console.error('DatePickerX, getMaxDate: Invalid date value.');
+                        value = optionsDefault.maxDate;
+                    }
+                }
 
                 return clearDate(value);
             }
@@ -579,7 +779,7 @@
 
             return dpxObjects[index];
         },
-        set: function() {} 
+        set: function() {}
     });
 
     window.DatePickerX = {

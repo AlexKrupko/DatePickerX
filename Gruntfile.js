@@ -9,9 +9,9 @@ module.exports = function (grunt)
  * DatePickerX\n\
  *\n\
  * Cool light visual date picker on pure JavaScript\n\
- * Browsers support: Chrome 45+, FireFox 40+, Safari 8+, IE10+, iOS Safari 8+, Android Browser 4.4+\n\
+ * Browsers support: Chrome 45+, FireFox 40+, Safari 8+, IE 11+, Edge 15+, iOS Safari, Android Google Chrome\n\
  *\n\
- * @author    Alexander Krupko <sanych.zp@gmail.com>\n\
+ * @author    Alexander Krupko <alex.krupko@ukr.net>\n\
  * @copyright 2016 Alexander Krupko\n\
  * @license   MIT\n\
  * @version   ' + grunt.file.readJSON('package.json').version + '\n\

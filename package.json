@@ -2,7 +2,7 @@
   "name": "datepickerx",
   "title": "DatePickerX",
   "description": "Cool light visual date picker on pure JavaScript",
-  "version": "1.0.7",
+  "version": "1.1.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/AlexKrupko/DatePickerX"
@@ -10,7 +10,7 @@
   "contributors": [
     {
       "name": "Alexander Krupko",
-      "email": "sanych.zp@gmail.com"
+      "email": "alex.krupko@ukr.net"
     }
   ],
   "keywords": [
@@ -29,8 +29,8 @@
     "grunt-contrib-uglify": "*",
     "grunt-contrib-watch": "*",
     "grunt-sass": "*",
-    "node-sass": "*",
     "load-grunt-tasks": "*",
+    "node-sass": "*",
     "npm": "*",
     "time-grunt": "*"
   },

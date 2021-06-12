@@ -17,6 +17,10 @@
     width: $dpxDaySize * 7;
     z-index: 1;
 
+    * {
+        margin: 0;
+        padding: 0;
+    }
     &::before {
         border-color: $dpxBackgroundColor transparent;
         border-style: solid;
@@ -43,6 +47,25 @@
     * {
         box-sizing: border-box;
     }
+    button {
+        appearance: none;
+        background: transparent;
+        border: none;
+        color: inherit;
+        cursor: pointer;
+        font: inherit;
+
+        &:hover,
+        &:focus-visible {
+            box-shadow: inset 0 0 0 2px lighten($dpxActiveColor, 10%), inset 0 0 0 4px $dpxBackgroundColor;
+            outline: none;
+        }
+        &:disabled {
+            color: #666;
+            cursor: default;
+            box-shadow: none;
+        }
+    }
     .dpx-title-box {
         align-items: center;
         border-bottom: 1px solid #ccc;
@@ -54,26 +77,28 @@
     .dpx-prev,
     .dpx-next {
         color: rgba(#fff, .6);
-        cursor: pointer;
-        display: block; // for IE10
         font-size: 22px;
         line-height: 50px;
         text-align: center;
         transition: .2s;
         width: 50px;
 
-        &:hover {
+        &:enabled:hover {
             color: #fff;
+        }
+        &:not(:focus-visible) {
+            box-shadow: none !important;
         }
     }
     .dpx-title {
-        display: block; // for IE10
+        color: inherit !important;
         font-size: 18px;
         line-height: 40px;
         padding: 0 10px;
-    }
-    &:not([data-dpx-type="year"]) .dpx-title {
-        cursor: pointer;
+
+        &:not(:focus-visible) {
+            box-shadow: none !important;
+        }
     }
     .dpx-content-box {
         box-sizing: content-box;
@@ -98,14 +123,6 @@
         display: flex;
         flex: 1 0 25%;
         justify-content: center;
-
-        &:not(.dpx-weekday) {
-            cursor: pointer;
-
-            &:hover {
-                box-shadow: inset 0 0 0 2px lighten($dpxActiveColor, 10%), inset 0 0 0 4px $dpxBackgroundColor;
-            }
-        }
     }
     .dpx-weekday {
         font-size: 15px;
@@ -116,7 +133,7 @@
         height: $dpxDaySize;
     }
     .dpx-current {
-        box-shadow: inset 0 0 0 2px lighten($dpxActiveColor, 20%);
+        box-shadow: inset 0 0 0 2px lighten($dpxActiveColor, 20%) !important;
     }
     .dpx-selected {
         background: $dpxActiveColor;
@@ -126,14 +143,5 @@
     }
     .dpx-out {
         color: #bbb;
-    }
-    .dpx-disabled {
-        color: #666 !important;
-        cursor: default !important;
-        box-shadow: none !important;
-
-        &.dpx-current {
-            box-shadow: inset 0 0 0 2px lighten($dpxActiveColor, 20%) !important;
-        }
     }
 }

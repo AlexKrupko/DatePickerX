@@ -2,12 +2,12 @@
  * DatePickerX
  *
  * Cool light visual date picker on pure JavaScript
- * Browsers support: Chrome 45+, FireFox 40+, Safari 8+, IE10+, iOS Safari 8+, Android Browser 4.4+
+ * Browsers support: Chrome 45+, FireFox 40+, Safari 8+, IE 11+, Edge 15+, iOS Safari, Android Google Chrome
  *
- * @author    Alexander Krupko <sanych.zp@gmail.com>
+ * @author    Alexander Krupko <alex.krupko@ukr.net>
  * @copyright 2016 Alexander Krupko
  * @license   MIT
- * @version   1.0.7
+ * @version   1.1.0
  */
 
 .date-picker-x-container {
@@ -31,6 +31,11 @@
 	user-select: none;
 	width: 308px;
 	z-index: 1;
+}
+
+.date-picker-x * {
+	margin: 0;
+	padding: 0;
 }
 
 .date-picker-x::before {
@@ -64,6 +69,29 @@
 	box-sizing: border-box;
 }
 
+.date-picker-x button {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	background: transparent;
+	border: none;
+	color: inherit;
+	cursor: pointer;
+	font: inherit;
+}
+
+.date-picker-x button:hover,
+.date-picker-x button:focus-visible {
+	box-shadow: inset 0 0 0 2px #3385ff, inset 0 0 0 4px #444;
+	outline: none;
+}
+
+.date-picker-x button:disabled {
+	color: #666;
+	cursor: default;
+	box-shadow: none;
+}
+
 .date-picker-x .dpx-title-box {
 	-webkit-box-align: center;
 	-ms-flex-align: center;
@@ -82,8 +110,6 @@
 .date-picker-x .dpx-prev,
 .date-picker-x .dpx-next {
 	color: rgba(255, 255, 255, 0.6);
-	cursor: pointer;
-	display: block;
 	font-size: 22px;
 	line-height: 50px;
 	text-align: center;
@@ -91,20 +117,25 @@
 	width: 50px;
 }
 
-.date-picker-x .dpx-prev:hover,
-.date-picker-x .dpx-next:hover {
+.date-picker-x .dpx-prev:enabled:hover,
+.date-picker-x .dpx-next:enabled:hover {
 	color: #fff;
 }
 
+.date-picker-x .dpx-prev:not(:focus-visible),
+.date-picker-x .dpx-next:not(:focus-visible) {
+	box-shadow: none !important;
+}
+
 .date-picker-x .dpx-title {
-	display: block;
+	color: inherit !important;
 	font-size: 18px;
 	line-height: 40px;
 	padding: 0 10px;
 }
 
-.date-picker-x:not([data-dpx-type="year"]) .dpx-title {
-	cursor: pointer;
+.date-picker-x .dpx-title:not(:focus-visible) {
+	box-shadow: none !important;
 }
 
 .date-picker-x .dpx-content-box {
@@ -151,14 +182,6 @@
 	justify-content: center;
 }
 
-.date-picker-x .dpx-item:not(.dpx-weekday) {
-	cursor: pointer;
-}
-
-.date-picker-x .dpx-item:not(.dpx-weekday):hover {
-	box-shadow: inset 0 0 0 2px #3385ff, inset 0 0 0 4px #444;
-}
-
 .date-picker-x .dpx-weekday {
 	font-size: 15px;
 	height: 24px !important;
@@ -171,7 +194,7 @@
 }
 
 .date-picker-x .dpx-current {
-	box-shadow: inset 0 0 0 2px #66a3ff;
+	box-shadow: inset 0 0 0 2px #66a3ff !important;
 }
 
 .date-picker-x .dpx-selected {
@@ -184,15 +207,5 @@
 
 .date-picker-x .dpx-out {
 	color: #bbb;
-}
-
-.date-picker-x .dpx-disabled {
-	color: #666 !important;
-	cursor: default !important;
-	box-shadow: none !important;
-}
-
-.date-picker-x .dpx-disabled.dpx-current {
-	box-shadow: inset 0 0 0 2px #66a3ff !important;
 }
 
