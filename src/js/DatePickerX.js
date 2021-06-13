@@ -18,7 +18,8 @@
         titleFormatMonth : 'MM yyyy',
         titleFormatYear  : 'yyyy'
     },
-        openedDPX = null;
+        openedDPX = null,
+        globalEventsInitiated = false;
 
     /**
      * Creates and returns new DOM element
@@ -223,7 +224,7 @@
                     document.querySelectorAll('[href], input, select, textarea, button, iframe, object, embed, [tabindex], [contenteditable]')
                 ).filter(function(item)
                 {
-                    return focusableElements.indexOf(item) < 0;
+                    return focusableElements.indexOf(item) < 0 && item.tabIndex >= 0;
                 }).forEach(function(item)
                 {
                     item.dataset.datepickerxDisabledTabIndex = item.tabIndex;
@@ -255,6 +256,8 @@
                 {
                     item.tabIndex = -1;
                 });
+
+                openedDPX = null;
             }
         }
 
@@ -273,7 +276,7 @@
             };
 
             input.addEventListener('click', openDatePicker);
-            window.addEventListener('keydown', function(event)
+            !globalEventsInitiated && window.addEventListener('keydown', function(event)
             {
                 if (event.keyCode === 13) {
                     if (document.activeElement === input) {
@@ -294,7 +297,7 @@
                     }
                 }
             });
-            window.addEventListener('click', closeDatePicker);
+            !globalEventsInitiated && window.addEventListener('click', closeDatePicker);
             elements.container.addEventListener('click', function(e)
             {
                 e.stopPropagation();
@@ -339,6 +342,8 @@
             {
                 dpx.setValue(null) && closeDatePicker();
             });
+
+            globalEventsInitiated = true;
         }
 
         /**
